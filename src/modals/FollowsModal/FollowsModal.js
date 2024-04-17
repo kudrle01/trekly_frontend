@@ -5,6 +5,7 @@ import UserInfoRow from '../../components/UserInfoRow';
 import { fetchFollowsByUserId } from '../../services/api/follows';
 import performAuthenticatedOperation from '../../services/utilities/authenticatedRequest';
 import useAuthStore from '../../store/authStore';
+import useRefreshStore from '../../store/refreshStore';
 
 const FollowsModal = ({ modalVisible, setModalVisible, userId, listType, navigation, refreshUserData }) => {
     const [lastGestureDy, setLastGestureDy] = useState(0);
@@ -14,6 +15,7 @@ const FollowsModal = ({ modalVisible, setModalVisible, userId, listType, navigat
     const [listToShow, setListToShow] = useState([]);
     const [error, setError] = useState('');
     const currentUser = useAuthStore(state => state.currentUser);
+    const refresh = useRefreshStore(state => state.refresh);
 
     useEffect(() => {
         const loadData = async () => {
@@ -37,7 +39,7 @@ const FollowsModal = ({ modalVisible, setModalVisible, userId, listType, navigat
         };
 
         loadData();
-    }, [userId, listType, refreshUserData, currentUser.followers, currentUser.following]);
+    }, [userId, listType, refreshUserData, currentUser.followers, currentUser.following, refresh]);
 
     const onGestureEvent = Animated.event(
         [{ nativeEvent: { translationY: translateY } }],

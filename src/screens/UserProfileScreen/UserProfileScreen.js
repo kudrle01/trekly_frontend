@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import ProfileContent from '../../components/ProfileContent';
-import UserProfileHeader from '../../components/headers/UserProfileheader';
+import UserProfileHeader from '../../components/headers/UserProfileHeader';
 
 const UserProfileScreen = ({ route, navigation }) => {
     const { user } = route.params || {};

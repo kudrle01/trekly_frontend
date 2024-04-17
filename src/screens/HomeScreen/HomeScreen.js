@@ -8,6 +8,7 @@ import useAuthStore from '../../store/authStore';
 import performAuthenticatedOperation from '../../services/utilities/authenticatedRequest';
 import { checkAchievements } from '../../services/api/achievements';
 import useAchievementStore from '../../store/achievementStore';
+import useRefreshStore from '../../store/refreshStore';
 
 const HomeScreen = ({ navigation }) => {
     const [workouts, setWorkouts] = useState([]);
@@ -19,8 +20,9 @@ const HomeScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [feedType, setFeedType] = useState('followed');
-    const showAchievement = useAchievementStore((state) => state.showAchievement);
+    const showAchievement = useAchievementStore(state => state.showAchievement);
     const currentUser = useAuthStore(state => state.currentUser);
+    const refresh = useRefreshStore(state => state.refresh);
 
     const checkAuthentication = async () => {
         const isAuthenticated = await checkAuth();
@@ -51,7 +53,7 @@ const HomeScreen = ({ navigation }) => {
             setRefreshing(false);
             setLoading(false);
         }
-    }, [loading, page, feedType]);
+    }, [loading, page, feedType, refresh]);
 
     const onRefresh = useCallback(() => {
         checkAuthentication();
@@ -62,6 +64,11 @@ const HomeScreen = ({ navigation }) => {
         checkAuthentication();
         fetchUserAndWorkouts();
     }, [feedType]);
+
+    useEffect(() => {
+        checkAuthentication();
+        fetchUserAndWorkouts(true);
+    }, [refresh]);
 
     const changeFeedType = (type) => {
         if(feedType !== type){

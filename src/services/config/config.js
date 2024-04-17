@@ -36,5 +36,6 @@ export const config = {
     DELETE_ACCOUNT: `${API_URL}/users/delete_account`,
     REPORT_WORKOUT: `${API_URL}/reports/report_workout`,
     REPORT_USER: `${API_URL}/reports/report_user`,
+    BLOCK_USER: `${API_URL}/reports/block_user`,
   },
 };

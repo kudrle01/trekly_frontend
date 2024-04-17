@@ -10,6 +10,7 @@ import UserWorkoutList from '../UserWorkoutsList/UserWorkoutList';
 import UserSplitStatsContainer from '../UserSplitStatsContainer';
 import UserStatsContainer from '../UserStatsContainer';
 import UserProfilePhotoContainer from '../UserProfilePhotoContainer';
+import useRefreshStore from '../../store/refreshStore';
 
 
 const ProfileContent = ({ navigation, user }) => {
@@ -17,6 +18,7 @@ const ProfileContent = ({ navigation, user }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [userData, setUserData] = useState();
     const [isFollowing, setIsFollowing] = useState(currentUser?.following.some(rel => rel.followed === user?._id));
+    const refresh = useRefreshStore(state => state.refresh);
 
     const fetchAndUpdateUserData = useCallback(async () => {
         setRefreshing(true);
@@ -35,7 +37,7 @@ const ProfileContent = ({ navigation, user }) => {
 
     useEffect(() => {
         fetchAndUpdateUserData();
-    }, [fetchAndUpdateUserData, user._id, user.profilePhotoUrl, navigation]);
+    }, [fetchAndUpdateUserData, user._id, user.profilePhotoUrl, navigation, refresh]);
 
     const handleFollowPress = async () => {
         try {
@@ -49,6 +51,7 @@ const ProfileContent = ({ navigation, user }) => {
                 }
                 setIsFollowing(!isFollowing);
                 fetchAndUpdateUserData();
+                useRefreshStore.getState().toggleRefresh();
             });
         } catch (error) {
             console.error("Follow/Unfollow action failed:", error);
