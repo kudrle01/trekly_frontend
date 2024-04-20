@@ -1,4 +1,5 @@
-const API_URL = 'https://trekly-app-1e3b0be8eb44.herokuapp.com';
+// Here you can set your own IP address of backend
+const API_URL = 'http://127.0.0.1:5000';
 
 export const config = {
   API_ENDPOINTS: {
